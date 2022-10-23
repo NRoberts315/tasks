@@ -129,17 +129,23 @@ export function makeMath(addends: number[]): string {
  */
 export function injectPositive(values: number[]): number[] {
     let count = 0;
-    const sumAdded = values.map((single: number): number =>
-        single >= 0 ? single : 0
-    );
+    const firstNegative = values.findIndex((nums: number) => nums < 0);
+    const sumAdded = values.map((single: number): number => single);
     const hasNeg = values.map((single: number): boolean =>
         single < 0 ? false : true
     );
-    count = values.reduce(
-        (currentValue: number, num: number) => currentValue + num,
-        0
-    );
-    if (!hasNeg.includes(false)) {
+    if (hasNeg.includes(false)) {
+        const sumFinder = sumAdded.slice(0, firstNegative);
+        count = sumFinder.reduce(
+            (currentValue: number, num: number) => currentValue + num,
+            0
+        );
+        sumAdded.splice(firstNegative + 1, 0, count);
+    } else if (!hasNeg.includes(false)) {
+        count = sumAdded.reduce(
+            (currentValue: number, num: number) => currentValue + num,
+            0
+        );
         sumAdded.push(count);
     }
     return sumAdded;
