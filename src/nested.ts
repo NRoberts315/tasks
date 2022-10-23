@@ -1,3 +1,4 @@
+import { copyFile } from "fs";
 import { validateLocaleAndSetLanguage } from "typescript";
 import { Answer } from "./interfaces/answer";
 import { Question, QuestionType } from "./interfaces/question";
@@ -160,7 +161,8 @@ export function addNewQuestion(
     name: string,
     type: QuestionType
 ): Question[] {
-    return [];
+    const copiedQuestions = [...questions, makeBlankQuestion(id, name, type)];
+    return copiedQuestions;
 }
 
 /***
@@ -173,7 +175,15 @@ export function renameQuestionById(
     targetId: number,
     newName: string
 ): Question[] {
-    return [];
+    const renamedQuestions = questions.map(
+        (question: Question): Question => ({ ...question })
+    );
+    for (let i = 0; i < renamedQuestions.length; i++) {
+        if (renamedQuestions[i].id === targetId) {
+            renamedQuestions[i].name = newName;
+        }
+    }
+    return renamedQuestions;
 }
 
 /***
