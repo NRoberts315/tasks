@@ -125,7 +125,13 @@ export function publishQuestion(question: Question): Question {
  * The `published` field should be reset to false.
  */
 export function duplicateQuestion(id: number, oldQuestion: Question): Question {
-    return oldQuestion;
+    const duplicatedQuesiton = {
+        ...oldQuestion,
+        name: `Copy of ${oldQuestion.name}`,
+        published: false,
+        id: id
+    };
+    return duplicatedQuesiton;
 }
 
 /**
@@ -136,7 +142,11 @@ export function duplicateQuestion(id: number, oldQuestion: Question): Question {
  * Check out the subsection about "Nested Fields" for more information.
  */
 export function addOption(question: Question, newOption: string): Question {
-    return question;
+    const newOptionQuestion = {
+        ...question,
+        options: [...question.options, newOption]
+    };
+    return newOptionQuestion;
 }
 
 /**
