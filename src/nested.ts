@@ -2,7 +2,7 @@ import { copyFile } from "fs";
 import { validateLocaleAndSetLanguage } from "typescript";
 import { Answer } from "./interfaces/answer";
 import { Question, QuestionType } from "./interfaces/question";
-import { makeBlankQuestion } from "./objects";
+import { duplicateQuestion, makeBlankQuestion } from "./objects";
 
 /**
  * Consumes an array of questions and returns a new array with only the questions
@@ -228,7 +228,22 @@ export function editOption(
     targetOptionIndex: number,
     newOption: string
 ): Question[] {
-    return [];
+    const changedOption = questions.map(
+        (question: Question): Question => ({
+            ...question,
+            options: [...question.options]
+        })
+    );
+    for (let i = 0; i < changedOption.length; i++) {
+        if (changedOption[i].id === targetId) {
+            if (targetOptionIndex === -1) {
+                changedOption[i].options.push(newOption);
+            } else {
+                changedOption[i].options[targetOptionIndex] = newOption;
+            }
+        }
+    }
+    return changedOption;
 }
 
 /***
@@ -242,5 +257,18 @@ export function duplicateQuestionInArray(
     targetId: number,
     newId: number
 ): Question[] {
-    return [];
+    const doubleQuestion = questions.map(
+        (question: Question): Question => ({ ...question })
+    );
+    for (let i = 0; i < doubleQuestion.length; i++) {
+        if (doubleQuestion[i].id === targetId) {
+            doubleQuestion.splice(
+                i + 1,
+                0,
+                duplicateQuestion(newId, doubleQuestion[i])
+            );
+            break;
+        }
+    }
+    return doubleQuestion;
 }
