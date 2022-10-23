@@ -1,5 +1,7 @@
+import { validateLocaleAndSetLanguage } from "typescript";
 import { Answer } from "./interfaces/answer";
 import { Question, QuestionType } from "./interfaces/question";
+import { makeBlankQuestion } from "./objects";
 
 /**
  * Consumes an array of questions and returns a new array with only the questions
@@ -33,6 +35,12 @@ export function findQuestion(
     questions: Question[],
     id: number
 ): Question | null {
+    const findQ = questions.findIndex(
+        (question: Question): boolean => question.id == id
+    );
+    if (questions[findQ]) {
+        return questions[findQ];
+    }
     return null;
 }
 
