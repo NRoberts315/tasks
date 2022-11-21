@@ -35,10 +35,7 @@ export function ChangeColor(): JSX.Element {
             </Form.Group>
             <h3>
                 You have chosen
-                <p
-                    data-testid="colored-box"
-                    style={{ backgroundColor: "${color}" }}
-                >
+                <p data-testid="colored-box" style={{ backgroundColor: color }}>
                     {color}
                 </p>
             </h3>
